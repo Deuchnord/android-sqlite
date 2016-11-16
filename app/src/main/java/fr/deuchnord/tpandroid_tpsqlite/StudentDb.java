@@ -47,6 +47,19 @@ public class StudentDb extends SQLiteOpenHelper
         ArrayList<String> names = new ArrayList<>();
 
         // TODO: à compléter
+        SQLiteDatabase db = getReadableDatabase();
+        String[] fields = {
+                StudentTable.STUDENT_NAME
+        };
+        Cursor cursor = db.query(StudentTable.TABLE_NAME, fields, null, null, null, null, null);
+
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast())
+        {
+            names.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
 
         return names;
     }
@@ -54,6 +67,10 @@ public class StudentDb extends SQLiteOpenHelper
     public long putStudent(String name)
     {
         // TODO: à compléter
-        // Attention, cette classe doit retourner l'ID de l'étudiant nouvellement ajouté !
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(StudentTable.STUDENT_NAME, name);
+
+        return db.insert(StudentTable.TABLE_NAME, null, values);
     }
 }
